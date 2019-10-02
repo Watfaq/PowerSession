@@ -1,42 +1,41 @@
 ﻿using System;
+using System.CommandLine;
+using System.CommandLine.Invocation;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
+using PowerSession.Commands;
 using PowerSession.ConPTY;
 
 namespace PowerSession.Cli
 {
-    class Program
+    static class Program
     {
-        private static Terminal _terminal;
-        
         static void Main(string[] args)
         {
-            _terminal = new Terminal();
-            _terminal.OutputReady += Terminal_OutputReady;
-            Task.Run(() => _terminal.Start("powershell.exe", Console.WindowWidth, Console.WindowHeight));
-            Console.WriteLine("Type exit to stop");
-            do
+            var record = new Command("rec")
             {
-                var key = Console.ReadKey(true);
-                _terminal.WriteToPseudoConsole(key.KeyChar.ToString());
-            } while (true);
-        }
-
-        private static void Terminal_OutputReady(object sender, EventArgs e)
-        {
-            Task.Factory.StartNew(CopyConsoleToWindow, TaskCreationOptions.LongRunning);
-        }
-
-        private static void CopyConsoleToWindow()
-        {
-            using var reader = new StreamReader(_terminal.ConsoleOutStream);
-            char[] buf = new char[1];
-            while ((reader.ReadBlock(buf, 0, 1)) != 0)
+                new Argument<FileInfo>("file"),
+            };
+            record.Handler = CommandHandler.Create((FileInfo file) =>
             {
-                Console.Out.Write(buf);
-            }
+                var recordCmd = new RecordCommand(new RecordArgs
+                {
+                    Filename = file.FullName
+                });
+
+                recordCmd.Execute();
+            });
+            
+            var rooCommand = new RootCommand
+            {
+                record
+            };
+
+            rooCommand.Description = "PowerSession";
+            
+            rooCommand.InvokeAsync(args).Wait();
         }
     }
 }

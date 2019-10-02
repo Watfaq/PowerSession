@@ -6,7 +6,7 @@ using static PowerSession.ConPTY.Native.PseudoConsoleApi;
 
 namespace PowerSession.ConPTY
 {
-    internal sealed class PseudoConsolePipe : IDisposable
+    public sealed class PseudoConsolePipe : IDisposable
     {
         public readonly SafeFileHandle ReadSide;
         public readonly SafeFileHandle WriteSide;
