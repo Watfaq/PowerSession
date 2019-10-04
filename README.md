@@ -22,6 +22,10 @@ Only the `record` feature is implemented now. The output is comptible with ascii
     $ asciinema play a.txt
     ```
     
+## Checkout `asciinema` playing PowerSession record output: 
+
+[![asciicast](https://asciinema.org/a/272577.svg)](https://asciinema.org/a/272577)
+
 ## Roadmap
 
 - [ ] Implement other necessary features
