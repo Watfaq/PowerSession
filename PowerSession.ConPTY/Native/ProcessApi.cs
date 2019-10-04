@@ -1,8 +1,8 @@
-﻿using System;
-using System.Runtime.InteropServices;
-
-namespace PowerSession.ConPTY.Native
+﻿namespace PowerSession.ConPTY.Native
 {
+    using System;
+    using System.Runtime.InteropServices;
+
     internal static class ProcessApi
     {
         internal const uint EXTENDED_STARTUPINFO_PRESENT = 0x00080000;

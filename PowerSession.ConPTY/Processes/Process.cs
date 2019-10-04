@@ -1,26 +1,26 @@
-﻿using System;
-using System.Runtime.InteropServices;
-using PowerSession.ConPTY.Native;
-using static PowerSession.ConPTY.Native.ProcessApi;
+﻿using static PowerSession.ConPTY.Native.ProcessApi;
 
 namespace PowerSession.ConPTY.Processes
 {
+    using System;
+    using System.Runtime.InteropServices;
+
     internal sealed class Process : IDisposable
     {
-        public Process(ProcessApi.STARTUPINFOEX startupInfo, ProcessApi.PROCESS_INFORMATION processInfo)
+        public Process(STARTUPINFOEX startupInfo, PROCESS_INFORMATION processInfo)
         {
             StartupInfo = startupInfo;
             ProcessInfo = processInfo;
         }
 
-        public ProcessApi.STARTUPINFOEX StartupInfo { get; }
-        public ProcessApi.PROCESS_INFORMATION ProcessInfo { get; }
+        public STARTUPINFOEX StartupInfo { get; }
+        public PROCESS_INFORMATION ProcessInfo { get; }
 
         #region IDisposable Support
 
-        private bool disposedValue = false; // To detect redundant calls
+        private bool disposedValue; // To detect redundant calls
 
-        void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (!disposedValue)
             {
@@ -39,14 +39,8 @@ namespace PowerSession.ConPTY.Processes
                 }
 
                 // Close process and thread handles
-                if (ProcessInfo.hProcess != IntPtr.Zero)
-                {
-                    CloseHandle(ProcessInfo.hProcess);
-                }
-                if (ProcessInfo.hThread != IntPtr.Zero)
-                {
-                    CloseHandle(ProcessInfo.hThread);
-                }
+                if (ProcessInfo.hProcess != IntPtr.Zero) CloseHandle(ProcessInfo.hProcess);
+                if (ProcessInfo.hThread != IntPtr.Zero) CloseHandle(ProcessInfo.hThread);
 
                 disposedValue = true;
             }

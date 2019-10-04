@@ -1,11 +1,12 @@
-﻿using System;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using Microsoft.Win32.SafeHandles;
-using static PowerSession.ConPTY.Native.PseudoConsoleApi;
+﻿using static PowerSession.ConPTY.Native.PseudoConsoleApi;
 
 namespace PowerSession.ConPTY
 {
+    using System;
+    using System.ComponentModel;
+    using System.Runtime.InteropServices;
+    using Microsoft.Win32.SafeHandles;
+
     public sealed class PseudoConsolePipe : IDisposable
     {
         public readonly SafeFileHandle ReadSide;
@@ -14,14 +15,12 @@ namespace PowerSession.ConPTY
         public PseudoConsolePipe()
         {
             if (!CreatePipe(out ReadSide, out WriteSide, IntPtr.Zero, 0))
-            {
                 throw new Win32Exception(Marshal.GetLastWin32Error(), "Failed to create pipe.");
-            }
         }
 
         #region IDisposable
 
-        void Dispose(bool disposing)
+        private void Dispose(bool disposing)
         {
             if (disposing)
             {

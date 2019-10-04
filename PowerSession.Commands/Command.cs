@@ -1,13 +1,13 @@
-﻿using System;
-using System.IO;
-
-namespace PowerSession.Commands
+﻿namespace PowerSession.Commands
 {
+    using System;
+    using System.IO;
+
     public interface ICommand
     {
         int Execute();
     }
-    
+
     internal abstract class Command
     {
         protected void Log(string text, TextWriter output = null)
