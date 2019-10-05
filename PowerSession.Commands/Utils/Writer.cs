@@ -15,7 +15,7 @@
         private static readonly ManualResetEvent WaitForWriter = new ManualResetEvent(false);
         private readonly FileStream _fileStream;
         private readonly DateTimeOffset _startTimeStamp;
-        private OutputHeader _header;
+        private RecordHeader _header;
 
         public FileWriter(string output)
         {
@@ -30,7 +30,7 @@
             _fileStream?.Dispose();
         }
 
-        public void SetHeader(OutputHeader header)
+        public void SetHeader(RecordHeader header)
         {
             header.Timestamp = _startTimeStamp.ToUnixTimeMilliseconds();
             _header = header;
@@ -64,7 +64,7 @@
                 {
                     var ts = DateTimeOffset.Now - _startTimeStamp;
                     var chars = string.Join("", buf.Take(bytesRead).Select(c => c.ToString()));
-                    var data = new List<object> {ts.TotalMilliseconds / 1000, "o", chars};
+                    var data = new List<object> {ts.TotalSeconds, "o", chars};
                     sw.WriteLine(JsonConvert.SerializeObject(data)); // asciinema compatible
                     Console.Out.Write(buf.Take(bytesRead).ToArray());
                 }

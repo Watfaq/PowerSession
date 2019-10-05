@@ -22,10 +22,21 @@
 
                 recordCmd.Execute();
             });
+            
+            var play = new Command("play")
+            {
+                new Argument<FileInfo>("file")
+            };
+            play.Handler = CommandHandler.Create((FileInfo file) =>
+            {
+                var playCommand = new PlayCommand(new PlayArgs{Filename = file.FullName, EnableAnsiEscape = true});
+                playCommand.Execute();
+            });
 
             var rooCommand = new RootCommand
             {
-                record
+                record,
+                play
             };
 
             rooCommand.Description = "PowerSession";

@@ -12,7 +12,6 @@ namespace PowerSession.ConPTY
 
     public sealed class Terminal
     {
-        private const string ExitCommand = "exit\r";
         private const string CtrlC_Command = "\x3";
 
         private readonly Stream _inputReader;
@@ -37,7 +36,10 @@ namespace PowerSession.ConPTY
                 if (GetConsoleMode(stdout, out var consoleMode))
                 {
                     consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
-                    SetConsoleMode(stdout, consoleMode);
+                    if (!SetConsoleMode(stdout, consoleMode))
+                    {
+                        throw new NotSupportedException("VIRTUAL_TERMINAL_PROCESSING");
+                    }
                 }
             }
 

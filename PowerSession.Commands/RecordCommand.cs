@@ -7,13 +7,14 @@
     using Newtonsoft.Json;
     using Utils;
 
-    public struct OutputHeader
+    public struct RecordHeader
     {
         [JsonProperty("version")] public int Version;
         [JsonProperty("width")] public int Width;
         [JsonProperty("height")] public int Height;
         [JsonProperty("timestamp")] public long Timestamp;
         [JsonProperty("env")] public IDictionary Environment;
+        public bool Valid => Version == 2;
     }
 
     public struct RecordArgs
@@ -76,16 +77,16 @@
             _env.Add("POWERSESSION_RECORDING", "1");
 
             using var writer = new FileWriter(filename);
-
-            var terminal = new Terminal(writer.GetInputStream(), writer.GetWriteStream());
-
-            writer.SetHeader(new OutputHeader
+            var headerInfo = new RecordHeader
             {
                 Version = 2,
-                Width = terminal.Width,
-                Height = terminal.Height,
+                Width = Console.WindowWidth,
+                Height = Console.WindowHeight,
                 Environment = _env
-            });
+            };
+            writer.SetHeader(headerInfo);
+            
+            var terminal = new Terminal(writer.GetInputStream(), writer.GetWriteStream(), width: headerInfo.Width, height: headerInfo.Height);
             terminal.Record(command, _env);
             Console.WriteLine("Record Finished");
         }
