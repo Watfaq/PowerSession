@@ -18,15 +18,29 @@ Only the `record` feature is implemented now. The output is comptible with ascii
 
 3. Play
 
-    ```bash
+    ```PowerShell
     $ PowerSession.Cli.exe play a.txt
     ```
-    
-## Checkout `asciinema` playing PowerSession record output: 
 
-[![asciicast](https://asciinema.org/a/272577.svg)](https://asciinema.org/a/272577)
+0. Auth
+
+    ```PowerShell
+    $ PowerSession.Cli.exe auth
+    ```
+
+4. Upload
+
+    ```PowerShell
+    $ PowerSession.Cli.exe upload a.txt
+    ```
+    
+## Checkout A Demo
+
+[![asciicast](https://asciinema.org/a/272866.svg)](https://asciinema.org/a/272866)
 
 ## Roadmap
 
-- [ ] Implement other necessary features
-- [ ] ...
+- [x] Implement other necessary features
+    - [ ] Other optional parameters
+- [ ] Publish to package installers
+- [ ] Test Cases

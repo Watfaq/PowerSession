@@ -3,11 +3,12 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.0</TargetFramework>
+        <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
         <AssemblyName>PowerSession</AssemblyName>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageId>PowerSession</PackageId>
         <Title>PowerSession</Title>
         <Authors>Yuwei Ba</Authors>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>
