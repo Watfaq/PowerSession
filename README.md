@@ -1,10 +1,18 @@
 # PowerSession
 
+[![Build Status](https://watfaq.visualstudio.com/PowerSession/_apis/build/status/PowerSession-.NET%20Core-CI?branchName=master)](https://watfaq.visualstudio.com/PowerSession/_build/latest?definitionId=8&branchName=master)
+
 > Record a Session in PowerShell.
 
-PowerShell version(PoC still) of [asciinema](https://github.com/asciinema/asciinema) using [Windows Pseudo Console(ConPTY)](https://devblogs.microsoft.com/commandline/windows-command-line-introducing-the-windows-pseudo-console-conpty/)
+PowerShell version of [asciinema](https://github.com/asciinema/asciinema) based on [Windows Pseudo Console(ConPTY)](https://devblogs.microsoft.com/commandline/windows-command-line-introducing-the-windows-pseudo-console-conpty/)
 
-Only the `record` feature is implemented now. The output is comptible with asciinema v2 standard and can be played by `ascinnema`
+Basic features record/play/auth/upload are working now.
+
+
+## Compatibilities
+
+* The output is comptible with asciinema v2 standard and can be played by `ascinnema`.
+* The `auth` and `upload` functionalities are agains `asciinema.org`.
 
 
 ## Play around
