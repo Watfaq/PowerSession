@@ -23,27 +23,27 @@ Download `PowerSession.exe` at Release Page https://github.com/ibigbug/PowerSess
 
 ### Record
 
-    ```PowerShell
-    $ PowerSession.Cli.exe rec a.txt
-    ```
+```PowerShell
+$ PowerSession.Cli.exe rec a.txt
+```
 
 ### Play
 
-    ```PowerShell
-    $ PowerSession.Cli.exe play a.txt
-    ```
+```PowerShell
+$ PowerSession.Cli.exe play a.txt
+```
 
 ### Auth
 
-    ```PowerShell
-    $ PowerSession.Cli.exe auth
-    ```
+```PowerShell
+$ PowerSession.Cli.exe auth
+```
 
 ### Upload
 
-    ```PowerShell
-    $ PowerSession.Cli.exe upload a.txt
-    ```
+```PowerShell
+$ PowerSession.Cli.exe upload a.txt
+```
     
 ## Checkout A Demo
 
