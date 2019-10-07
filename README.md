@@ -14,17 +14,20 @@ Basic features record/play/auth/upload are working now.
 * The output is comptible with asciinema v2 standard and can be played by `ascinnema`.
 * The `auth` and `upload` functionalities are agains `asciinema.org`.
 
+## Installation
 
-## Play around
+Download `PowerSession.exe` at Release Page https://github.com/ibigbug/PowerSession/releases
 
-1. Build the Solution
-2. Run `PowerSession.Cli.exe` under `.\PowerSession\PowerSession.Cli\bin\Debug\netcoreapp3.0`
+
+## Usage
+
+0. Record
 
     ```PowerShell
     $ PowerSession.Cli.exe rec a.txt
     ```
 
-3. Play
+0. Play
 
     ```PowerShell
     $ PowerSession.Cli.exe play a.txt
@@ -36,7 +39,7 @@ Basic features record/play/auth/upload are working now.
     $ PowerSession.Cli.exe auth
     ```
 
-4. Upload
+0. Upload
 
     ```PowerShell
     $ PowerSession.Cli.exe upload a.txt
