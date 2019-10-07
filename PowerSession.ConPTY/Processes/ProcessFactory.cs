@@ -1,10 +1,11 @@
-﻿using static PowerSession.ConPTY.Native.ProcessApi;
+﻿using static PowerSession.Main.ConPTY.Native.ProcessApi;
 
-namespace PowerSession.ConPTY.Processes
+namespace PowerSession.Main.ConPTY.Processes
 {
     using System;
     using System.ComponentModel;
     using System.Runtime.InteropServices;
+    using Native;
 
     internal static class ProcessFactory
     {
@@ -18,7 +19,7 @@ namespace PowerSession.ConPTY.Processes
             return new Process(startupInfo, processInfo);
         }
 
-        private static STARTUPINFOEX ConfigureProcessThread(IntPtr hPC, IntPtr attributes)
+        private static ProcessApi.STARTUPINFOEX ConfigureProcessThread(IntPtr hPC, IntPtr attributes)
         {
             // this method implements the behavior described in https://docs.microsoft.com/en-us/windows/console/creating-a-pseudoconsole-session#preparing-for-creation-of-the-child-process
 
@@ -34,8 +35,8 @@ namespace PowerSession.ConPTY.Processes
                 throw new Win32Exception(Marshal.GetLastWin32Error(),
                     "Could not calculate the number of bytes for the attribute list.");
 
-            var startupInfo = new STARTUPINFOEX();
-            startupInfo.StartupInfo.cb = Marshal.SizeOf<STARTUPINFOEX>();
+            var startupInfo = new ProcessApi.STARTUPINFOEX();
+            startupInfo.StartupInfo.cb = Marshal.SizeOf<ProcessApi.STARTUPINFOEX>();
             startupInfo.lpAttributeList = Marshal.AllocHGlobal(lpSize);
 
             success = InitializeProcThreadAttributeList(
@@ -61,11 +62,11 @@ namespace PowerSession.ConPTY.Processes
             return startupInfo;
         }
 
-        private static PROCESS_INFORMATION RunProcess(ref STARTUPINFOEX sInfoEx, string commandLine)
+        private static ProcessApi.PROCESS_INFORMATION RunProcess(ref ProcessApi.STARTUPINFOEX sInfoEx, string commandLine)
         {
-            var securityAttributeSize = Marshal.SizeOf<SECURITY_ATTRIBUTES>();
-            var pSec = new SECURITY_ATTRIBUTES {nLength = securityAttributeSize};
-            var tSec = new SECURITY_ATTRIBUTES {nLength = securityAttributeSize};
+            var securityAttributeSize = Marshal.SizeOf<ProcessApi.SECURITY_ATTRIBUTES>();
+            var pSec = new ProcessApi.SECURITY_ATTRIBUTES {nLength = securityAttributeSize};
+            var tSec = new ProcessApi.SECURITY_ATTRIBUTES {nLength = securityAttributeSize};
             var success = CreateProcess(
                 null,
                 commandLine,

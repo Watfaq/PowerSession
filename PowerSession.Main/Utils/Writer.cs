@@ -1,4 +1,4 @@
-﻿namespace PowerSession.Commands.Utils
+﻿namespace PowerSession.Main.Utils
 {
     using System;
     using System.Collections.Generic;
@@ -8,6 +8,7 @@
     using System.Text;
     using System.Threading;
     using System.Threading.Tasks;
+    using Commands;
     using Newtonsoft.Json;
 
     public class FileWriter : IDisposable
@@ -32,7 +33,7 @@
 
         public void SetHeader(RecordHeader header)
         {
-            header.Timestamp = _startTimeStamp.ToUnixTimeMilliseconds();
+            header.Timestamp = _startTimeStamp.ToUnixTimeSeconds();
             _header = header;
         }
 

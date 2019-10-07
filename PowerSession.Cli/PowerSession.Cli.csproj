@@ -11,8 +11,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\PowerSession.Commands\PowerSession.Commands.csproj" />
       <ProjectReference Include="..\PowerSession.ConPTY\PowerSession.ConPTY.csproj" />
+      <ProjectReference Include="..\PowerSession.Main\PowerSession.Main.csproj" />
     </ItemGroup>
 
     <ItemGroup>

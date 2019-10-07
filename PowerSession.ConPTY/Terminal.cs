@@ -1,6 +1,6 @@
-﻿using static PowerSession.ConPTY.Native.ConsoleApi;
+﻿using static PowerSession.Main.ConPTY.Native.ConsoleApi;
 
-namespace PowerSession.ConPTY
+namespace PowerSession.Main.ConPTY
 {
     using System;
     using System.Collections;
@@ -8,6 +8,7 @@ namespace PowerSession.ConPTY
     using System.Threading;
     using System.Threading.Tasks;
     using Microsoft.Win32.SafeHandles;
+    using Native;
     using Processes;
 
     public sealed class Terminal
@@ -16,13 +17,15 @@ namespace PowerSession.ConPTY
 
         private readonly Stream _inputReader;
         private readonly Stream _outputWriter;
-        public readonly int Height;
-
-        public readonly int Width;
+        private readonly int _height;
+        private readonly int _width;
 
         private SafeFileHandle _consoleInputPipeWriteHandle;
         private StreamWriter _consoleInputWriter;
         private FileStream _consoleOutStream;
+
+        private readonly CancellationTokenSource _tokenSource;
+        private readonly CancellationToken _token;
 
         public Terminal(Stream inputReader = null, Stream outputWriter = null, bool enableAnsiEscape = true,
             int width = default, int height = default)
@@ -43,15 +46,18 @@ namespace PowerSession.ConPTY
                 }
             }
 
-            Width = width == 0 ? Console.WindowWidth : width;
-            Height = height == 0 ? Console.WindowHeight : height;
+            _width = width == 0 ? Console.WindowWidth : width;
+            _height = height == 0 ? Console.WindowHeight : height;
+            
+            _tokenSource = new CancellationTokenSource();
+            _token = _tokenSource.Token;
         }
 
         public void Record(string command, IDictionary environment = null)
         {
             using var inputPipe = new PseudoConsolePipe();
             using var outputPipe = new PseudoConsolePipe();
-            using var pseudoConsole = PseudoConsole.Create(inputPipe.ReadSide, outputPipe.WriteSide, Width, Height);
+            using var pseudoConsole = PseudoConsole.Create(inputPipe.ReadSide, outputPipe.WriteSide, _width, _height);
             using var process = ProcessFactory.Start(command, PseudoConsole.PseudoConsoleThreadAttribute,
                 pseudoConsole.Handle);
             _consoleOutStream = new FileStream(outputPipe.ReadSide, FileAccess.Read);
@@ -67,6 +73,7 @@ namespace PowerSession.ConPTY
                 _consoleOutStream));
             WaitForExit(process).WaitOne(Timeout.Infinite);
 
+            _tokenSource.Cancel();
             _consoleOutStream.Close();
             _consoleInputWriter.Close();
             _outputWriter.Close();
@@ -82,8 +89,11 @@ namespace PowerSession.ConPTY
 
             Task.Factory.StartNew(() =>
             {
-                ConsoleKeyInfo key;
-                while ((key = Console.ReadKey(true)).Key != ConsoleKey.Escape) _consoleInputWriter.Write(key.KeyChar);
+                while (!_token.IsCancellationRequested)
+                {
+                    var key = Console.ReadKey(true);
+                    _consoleInputWriter.Write(key.KeyChar);
+                }
             }, TaskCreationOptions.LongRunning);
         }
 
@@ -107,7 +117,7 @@ namespace PowerSession.ConPTY
         {
             SetConsoleCtrlHandler(eventType =>
             {
-                if (eventType == CtrlTypes.CTRL_CLOSE_EVENT) handler();
+                if (eventType == ConsoleApi.CtrlTypes.CTRL_CLOSE_EVENT) handler();
                 return false;
             }, true);
         }

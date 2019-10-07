@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
+    using Main.Commands;
     using Newtonsoft.Json;
 
     struct SessionLine

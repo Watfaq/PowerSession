@@ -1,6 +1,6 @@
-﻿using static PowerSession.ConPTY.Native.PseudoConsoleApi;
+﻿using static PowerSession.Main.ConPTY.Native.PseudoConsoleApi;
 
-namespace PowerSession.ConPTY
+namespace PowerSession.Main.ConPTY
 {
     using System;
     using System.ComponentModel;

@@ -1,10 +1,11 @@
-﻿using static PowerSession.ConPTY.Native.PseudoConsoleApi;
+﻿using static PowerSession.Main.ConPTY.Native.PseudoConsoleApi;
 
-namespace PowerSession.ConPTY
+namespace PowerSession.Main.ConPTY
 {
     using System;
     using System.ComponentModel;
     using Microsoft.Win32.SafeHandles;
+    using Native;
 
     internal sealed class PseudoConsole : IDisposable
     {
@@ -26,7 +27,7 @@ namespace PowerSession.ConPTY
             int height)
         {
             var createResult = CreatePseudoConsole(
-                new COORD {X = (short) width, Y = (short) height},
+                new PseudoConsoleApi.COORD {X = (short) width, Y = (short) height},
                 inputReadSide, outputWriteSide,
                 0, out var hPC);
             if (createResult != 0) throw new Win32Exception(createResult, "Failed to create pseudo console.");

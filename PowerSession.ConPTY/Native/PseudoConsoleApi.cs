@@ -1,4 +1,4 @@
-﻿namespace PowerSession.ConPTY.Native
+﻿namespace PowerSession.Main.ConPTY.Native
 {
     using System;
     using System.Runtime.InteropServices;

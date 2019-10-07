@@ -1,10 +1,11 @@
-﻿namespace PowerSession.Commands
+﻿namespace PowerSession.Main.Commands
 {
     using System;
     using System.Collections;
     using System.IO;
     using ConPTY;
     using Newtonsoft.Json;
+    using PowerSession.Commands;
     using Utils;
 
     public struct RecordHeader
@@ -22,16 +23,9 @@
         public string Filename;
         public string Command;
         public bool Overwrite;
-
-        public RecordArgs(string filename, string command = null, bool overwrite = false)
-        {
-            Filename = filename;
-            Command = command;
-            Overwrite = overwrite;
-        }
     }
 
-    public class RecordCommand : ICommand
+    public class RecordCommand : BaseCommand, ICommand
     {
         private readonly RecordArgs _args;
         private readonly string _command;
@@ -75,6 +69,8 @@
 
             if (_env == null) _env = Environment.GetEnvironmentVariables();
             _env.Add("POWERSESSION_RECORDING", "1");
+            _env.Add("SHELL", "powershell.exe");
+            _env.Add("TERM", Environment.GetEnvironmentVariable("TERMINAL_EMULATOR") ?? "NotSure");
 
             using var writer = new FileWriter(filename);
             var headerInfo = new RecordHeader

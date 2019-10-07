@@ -1,10 +1,9 @@
-﻿using static PowerSession.ConPTY.Native.ConsoleApi;
-
-namespace PowerSession.Commands
+﻿namespace PowerSession.Commands
 {
     using System;
     using System.Threading;
     using System.Threading.Tasks;
+    using Main.Commands;
 
     public struct PlayArgs
     {
@@ -12,7 +11,7 @@ namespace PowerSession.Commands
         public bool EnableAnsiEscape;
     }
 
-    public class PlayCommand : ICommand
+    public class PlayCommand : BaseCommand, ICommand
     {
         private readonly CancellationTokenSource _cancellationTokenSource;
         private readonly AutoResetEvent _dataReceivedEvent;
@@ -22,7 +21,7 @@ namespace PowerSession.Commands
         private readonly RecordSession _session;
         private ConsoleKeyInfo _consoleKeyInfo;
 
-        public PlayCommand(PlayArgs args)
+        public PlayCommand(PlayArgs args) : base(args.EnableAnsiEscape)
         {
             _session = new RecordSession(args.Filename);
 
@@ -31,17 +30,6 @@ namespace PowerSession.Commands
             _readEvent = new AutoResetEvent(false);
             _dataReceivedEvent = new AutoResetEvent(false);
             Task.Factory.StartNew(ReadKey, TaskCreationOptions.LongRunning);
-
-            if (args.EnableAnsiEscape)
-            {
-                var stdout = GetStdHandle(STD_OUTPUT_HANDLE);
-                if (GetConsoleMode(stdout, out var consoleMode))
-                {
-                    consoleMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING | DISABLE_NEWLINE_AUTO_RETURN;
-                    if (!SetConsoleMode(stdout, consoleMode))
-                        throw new NotSupportedException("VIRTUAL_TERMINAL_PROCESSING");
-                }
-            }
         }
 
         public int Execute()

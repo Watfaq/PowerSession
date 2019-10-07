@@ -1,20 +1,21 @@
-﻿using static PowerSession.ConPTY.Native.ProcessApi;
+﻿using static PowerSession.Main.ConPTY.Native.ProcessApi;
 
-namespace PowerSession.ConPTY.Processes
+namespace PowerSession.Main.ConPTY.Processes
 {
     using System;
     using System.Runtime.InteropServices;
+    using Native;
 
     internal sealed class Process : IDisposable
     {
-        public Process(STARTUPINFOEX startupInfo, PROCESS_INFORMATION processInfo)
+        public Process(ProcessApi.STARTUPINFOEX startupInfo, ProcessApi.PROCESS_INFORMATION processInfo)
         {
             StartupInfo = startupInfo;
             ProcessInfo = processInfo;
         }
 
-        public STARTUPINFOEX StartupInfo { get; }
-        public PROCESS_INFORMATION ProcessInfo { get; }
+        public ProcessApi.STARTUPINFOEX StartupInfo { get; }
+        public ProcessApi.PROCESS_INFORMATION ProcessInfo { get; }
 
         #region IDisposable Support
 
