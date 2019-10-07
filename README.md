@@ -16,10 +16,10 @@ Only the `record` feature is implemented now. The output is comptible with ascii
     $ PowerSession.Cli.exe rec a.txt
     ```
 
-3. Play using `asciinema`
+3. Play
 
     ```bash
-    $ asciinema play a.txt
+    $ PowerSession.Cli.exe play a.txt
     ```
     
 ## Checkout `asciinema` playing PowerSession record output: 
