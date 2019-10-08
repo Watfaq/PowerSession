@@ -61,7 +61,7 @@
                 upload
             };
 
-            rooCommand.Description = "PowerSession.Main";
+            rooCommand.Description = "Record, Play and Share your PowerShell Session.";
 
             rooCommand.InvokeAsync(args).Wait();
         }
