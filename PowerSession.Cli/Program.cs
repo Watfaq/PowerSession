@@ -1,5 +1,6 @@
 ﻿namespace PowerSession.Cli
 {
+    using System;
     using System.CommandLine;
     using System.CommandLine.Invocation;
     using System.IO;
@@ -12,13 +13,18 @@
         {
             var record = new Command("rec")
             {
-                new Argument<FileInfo>("file")
+                new Argument<FileInfo>("file"),
+                new Option(new []{"--command", "-c"}, "The command to record, default to be powershell.exe")
+                {
+                    Argument = new Argument<string>()
+                }
             };
-            record.Handler = CommandHandler.Create((FileInfo file) =>
+            record.Handler = CommandHandler.Create((FileInfo file, string command) =>
             {
                 var recordCmd = new RecordCommand(new RecordArgs
                 {
-                    Filename = file.FullName
+                    Filename = file.FullName,
+                    Command = command
                 });
 
                 recordCmd.Execute();
