@@ -19,7 +19,7 @@ Basic features record/play/auth/upload are working now.
 ### Using [Scoop](https://scoop.sh)
 
 ```
-scoop install https://raw.githubusercontent.com/ibigbug/PowerSession/master/PowerSession.Cli/PowerSession.json
+> scoop install PowerSession
 ```
 
 ### Manual Download
