@@ -13,12 +13,13 @@
         {
             var record = new Command("rec")
             {
-                new Argument<FileInfo>("file"),
+                new Argument<FileInfo>("file"){Description = "The filename to save the record"},
                 new Option(new []{"--command", "-c"}, "The command to record, default to be powershell.exe")
                 {
                     Argument = new Argument<string>()
                 }
             };
+            record.Description = "Record and save a session";
             record.Handler = CommandHandler.Create((FileInfo file, string command) =>
             {
                 var recordCmd = new RecordCommand(new RecordArgs
@@ -32,8 +33,9 @@
             
             var play = new Command("play")
             {
-                new Argument<FileInfo>("file")
+                new Argument<FileInfo>("file"){Description = "The record session"}
             };
+            play.Description = "Play a recorded session";
             play.Handler = CommandHandler.Create((FileInfo file) =>
             {
                 var playCommand = new PlayCommand(new PlayArgs{Filename = file.FullName, EnableAnsiEscape = true});
@@ -46,13 +48,15 @@
                 {
                     var authCommand = new AuthCommand();
                     authCommand.Execute();
-                })
+                }), 
+                Description = "Auth with asciinema.org"
             };
             
             var upload = new Command("upload")
             {
-                new Argument<FileInfo>("file")
+                new Argument<FileInfo>("file"){Description = "The file to be uploaded"}
             };
+            upload.Description = "Upload a session to ascinema.org";
             upload.Handler = CommandHandler.Create((FileInfo file) =>
             {
                 var uploadCommand = new UploadCommand(file.FullName);

@@ -17,7 +17,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.CommandLine.Experimental" Version="0.3.0-alpha.19405.1" />
+      <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
+      <PackageReference Include="System.CommandLine.Experimental" Version="0.3.0-alpha.19528.1" />
     </ItemGroup>
 
 </Project>
