@@ -1,6 +1,13 @@
 pool:
   name: Azure Pipelines
 
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-16.04'
+pool:
+  vmImage: $(imageName)
+
 trigger:
   branches:
     include:
