@@ -1,6 +1,11 @@
-pool:
-  name: Azure Pipelines
-  vmImage: 'ubuntu-16.04'
+strategy:
+  matrix:
+    linux:
+      imageName: 'ubuntu-16.04'
+    mac:
+      imageName: 'macos-10.13'
+    windows:
+      imageName: 'vs2017-win2016'
 
 trigger:
   branches:
@@ -15,6 +20,8 @@ stages:
 - stage: Build
   jobs:
   - job: Restore
+    pool:
+      vmImage: $(imageName)
     steps:
     - task: DotNetCoreCLI@2
       displayName: Restore
@@ -25,6 +32,8 @@ stages:
         nugetConfigPath: PowerSession.Cli/nuget.config
 
   - job: Build
+    pool:
+      vmImage: $(imageName)
     steps:
     - task: DotNetCoreCLI@2
       displayName: Build
@@ -33,6 +42,8 @@ stages:
         arguments: '--configuration $(BuildConfiguration)'
 
   - job: Test
+    pool:
+      vmImage: $(imageName)
     steps:
     - task: DotNetCoreCLI@2
       displayName: Test
@@ -42,6 +53,8 @@ stages:
         arguments: '--configuration $(BuildConfiguration)'
 
   - job: Publish
+    pool:
+      vmImage: $(imageName)
     steps:
     - task: DotNetCoreCLI@2
       displayName: Publish
@@ -53,6 +66,8 @@ stages:
         zipAfterPublish: false
 
   - job: PackNuGet
+    pool:
+      vmImage: $(imageName)
     steps:
     - task: DotNetCoreCLI@2
       displayName: 'dotnet pack'
@@ -64,6 +79,8 @@ stages:
         includesymbols: true
 
   - job: PublishExe
+    pool:
+      vmImage: $(imageName)
     steps:
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Pipeline Artifact'
@@ -72,6 +89,8 @@ stages:
         artifact: exe
 
   - job: PublishNuGet
+    pool:
+      vmImage: $(imageName)
     steps:
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Pipeline Artifact'
@@ -83,6 +102,8 @@ stages:
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/release'))
   jobs:
   - job: ReleaseGithub
+    pool:
+      vmImage: $(imageName)
     steps:
     - task: DownloadPipelineArtifact@2
       displayName: 'Download Pipeline Artifact'
@@ -96,6 +117,8 @@ stages:
         assets: '$(System.ArtifactsDirectory)\drop\**\*'
 
   - job: ReleaseNuGet
+    pool:
+      vmImage: $(imageName)
     steps:
     - task: DownloadPipelineArtifact@2
       displayName: 'Download Pipeline Artifact'
