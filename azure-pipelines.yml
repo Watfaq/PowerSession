@@ -51,7 +51,7 @@ stages:
         arguments: '--configuration $(BuildConfiguration) --output $(System.ArtifactsDirectory)/exe/ -r win-x64  /p:PublishSingleFile=true /p:TrimUnusedDependencies=true /p:PublishTrimmed=true'
         zipAfterPublish: false
 
-  - job: Pack-NuGet
+  - job: PackNuGet
     steps:
     - task: DotNetCoreCLI@2
       displayName: 'dotnet pack'
@@ -62,7 +62,7 @@ stages:
         nobuild: true
         includesymbols: true
 
-  - job: Publish-exe
+  - job: PublishExe
     steps:
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Pipeline Artifact'
@@ -70,7 +70,7 @@ stages:
         targetPath: '$(System.ArtifactsDirectory)/exe'
         artifact: exe
 
-  - job: Publish-NuGet
+  - job: PublishNuGet
     steps:
     - task: PublishPipelineArtifact@1
       displayName: 'Publish Pipeline Artifact'
@@ -81,7 +81,7 @@ stages:
 - stage: Release
   condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/release'))
   jobs:
-  - job: Release-Github
+  - job: ReleaseGithub
     steps:
     - task: DownloadPipelineArtifact@2
       displayName: 'Download Pipeline Artifact'
@@ -94,7 +94,7 @@ stages:
         gitHubConnection: Github/ibigbug
         assets: '$(System.ArtifactsDirectory)\drop\**\*'
 
-  - job: Release-NuGet
+  - job: ReleaseNuGet
     steps:
     - task: DownloadPipelineArtifact@2
       displayName: 'Download Pipeline Artifact'
