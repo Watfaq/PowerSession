@@ -8,6 +8,7 @@
         <PackageId>PowerSession</PackageId>
         <Title>PowerSession</Title>
         <Authors>Yuwei Ba</Authors>
+        <IsPackable>true</IsPackable>
         <PackageVersion>1.2.1</PackageVersion>
         <AssemblyVersion>1.2.1</AssemblyVersion>
         <FileVersion>1.2.1</FileVersion>
