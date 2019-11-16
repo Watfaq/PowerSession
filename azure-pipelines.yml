@@ -1,55 +1,110 @@
 pool:
   name: Azure Pipelines
 
-steps:
-- task: DotNetCoreCLI@2
-  displayName: Restore
-  inputs:
-    command: restore
-    projects: '$(Parameters.RestoreBuildProjects)'
-    feedsToUse: config
-    nugetConfigPath: PowerSession.Cli/nuget.config
+trigger:
+  branches:
+    include:
+    - master
+  pr:
+    branches:
+      include:
+      - master
 
-- task: DotNetCoreCLI@2
-  displayName: Build
-  inputs:
-    projects: '$(Parameters.RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration)'
+stages:
+- stage: Build
+  jobs:
+  - job: Restore
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Restore
+      inputs:
+        command: restore
+        projects: '$(Parameters.RestoreBuildProjects)'
+        feedsToUse: config
+        nugetConfigPath: PowerSession.Cli/nuget.config
 
-- task: DotNetCoreCLI@2
-  displayName: Test
-  inputs:
-    command: test
-    projects: '$(Parameters.TestProjects)'
-    arguments: '--configuration $(BuildConfiguration)'
+  - job: Build
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Build
+      inputs:
+        projects: '$(Parameters.RestoreBuildProjects)'
+        arguments: '--configuration $(BuildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: Publish
-  inputs:
-    command: publish
-    publishWebProjects: false
-    projects: '$(Parameters.RestoreBuildProjects)'
-    arguments: '--configuration $(BuildConfiguration) --output $(System.ArtifactsDirectory)/exe/ -r win-x64  /p:PublishSingleFile=true /p:TrimUnusedDependencies=true /p:PublishTrimmed=true'
-    zipAfterPublish: false
+  - job: Test
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Test
+      inputs:
+        command: test
+        projects: '$(Parameters.TestProjects)'
+        arguments: '--configuration $(BuildConfiguration)'
 
-- task: DotNetCoreCLI@2
-  displayName: 'dotnet pack'
-  inputs:
-    command: pack
-    packagesToPack: PowerSession.Cli/PowerSession.Cli.csproj
-    packDirectory: '$(System.ArtifactsDirectory)/nupkg/'
-    nobuild: true
-    includesymbols: true
+  - job: Publish
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: Publish
+      inputs:
+        command: publish
+        publishWebProjects: false
+        projects: '$(Parameters.RestoreBuildProjects)'
+        arguments: '--configuration $(BuildConfiguration) --output $(System.ArtifactsDirectory)/exe/ -r win-x64  /p:PublishSingleFile=true /p:TrimUnusedDependencies=true /p:PublishTrimmed=true'
+        zipAfterPublish: false
 
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Pipeline Artifact'
-  inputs:
-    targetPath: '$(System.ArtifactsDirectory)/exe'
-    artifact: exe
+  - job: Pack NuGet
+    steps:
+    - task: DotNetCoreCLI@2
+      displayName: 'dotnet pack'
+      inputs:
+        command: pack
+        packagesToPack: PowerSession.Cli/PowerSession.Cli.csproj
+        packDirectory: '$(System.ArtifactsDirectory)/nupkg/'
+        nobuild: true
+        includesymbols: true
 
-- task: PublishPipelineArtifact@1
-  displayName: 'Publish Pipeline Artifact'
-  inputs:
-    targetPath: '$(System.ArtifactsDirectory)/nupkg'
-    artifact: nupkg
+  - job: Publish exe
+    steps:
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(System.ArtifactsDirectory)/exe'
+        artifact: exe
 
+  - job: Publish NuGet
+    steps:
+    - task: PublishPipelineArtifact@1
+      displayName: 'Publish Pipeline Artifact'
+      inputs:
+        targetPath: '$(System.ArtifactsDirectory)/nupkg'
+        artifact: nupkg
+
+- stage: Release
+  condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/release'))
+  jobs:
+  - job: Release Github
+    steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Pipeline Artifact'
+      inputs:
+        artifactName: exe
+        targetPath: '$(System.ArtifactsDirectory)'
+    - task: GitHubRelease@1
+      displayName: 'GitHub release (create)'
+      inputs:
+        gitHubConnection: Github/ibigbug
+        assets: '$(System.ArtifactsDirectory)\drop\**\*'
+
+  - job: Release NuGet
+    steps:
+    - task: DownloadPipelineArtifact@2
+      displayName: 'Download Pipeline Artifact'
+      inputs:
+        artifactName: nupkg
+
+    - task: NuGetCommand@2
+      displayName: 'NuGet push'
+      inputs:
+        command: push
+        packagesToPush: '$(Pipeline.Workspace)/**/*.nupkg;!$(Pipeline.Workspace)/**/*.symbols.nupkg'
+        nuGetFeedType: external
+        publishFeedCredentials: Nuget
