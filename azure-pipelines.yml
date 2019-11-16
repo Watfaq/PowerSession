@@ -5,10 +5,10 @@ trigger:
   branches:
     include:
     - master
-  pr:
-    branches:
-      include:
-      - master
+pr:
+  branches:
+    include:
+    - master
 
 stages:
 - stage: Build
