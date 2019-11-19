@@ -14,6 +14,12 @@ Basic features record/play/auth/upload are working now.
 
 ## Installation
 
+### using dotnet tool
+
+```
+> dotnet tool install --global PowerSession
+```
+
 ### Using [Scoop](https://scoop.sh)
 
 ```
