@@ -8,12 +8,15 @@
         <PackageId>PowerSession</PackageId>
         <Title>PowerSession</Title>
         <Authors>Yuwei Ba</Authors>
-        <IsPackable>false</IsPackable>
+        <IsPackable>true</IsPackable>
         <PackageVersion>1.2.1</PackageVersion>
         <AssemblyVersion>1.2.1</AssemblyVersion>
         <FileVersion>1.2.1</FileVersion>
+        <PackAsTool>true</PackAsTool>
+        <ToolCommandName>PowerSession</ToolCommandName>
+        <RepositoryUrl>https://github.com/ibigbug/PowerSession</RepositoryUrl>
     </PropertyGroup>
-
+    
     <ItemGroup>
       <ProjectReference Include="..\PowerSession.ConPTY\PowerSession.ConPTY.csproj" />
       <ProjectReference Include="..\PowerSession.Main\PowerSession.Main.csproj" />
