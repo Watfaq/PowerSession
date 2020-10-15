@@ -2,6 +2,7 @@
 {
     using System;
     using System.Collections;
+    using System.Collections.Generic;
     using System.IO;
     using ConPTY;
     using Newtonsoft.Json;
@@ -67,7 +68,7 @@
         {
             if (string.IsNullOrEmpty(command)) command = "powershell.exe";
 
-            if (_env == null) _env = Environment.GetEnvironmentVariables();
+            if (_env == null) _env = new Dictionary<string, string>();
             _env.Add("POWERSESSION_RECORDING", "1");
             _env.Add("SHELL", "powershell.exe");
             _env.Add("TERM", Environment.GetEnvironmentVariable("TERMINAL_EMULATOR") ?? "NotSure");
@@ -81,7 +82,7 @@
                 Environment = _env
             };
             writer.SetHeader(headerInfo);
-            
+
             var terminal = new Terminal(writer.GetInputStream(), writer.GetWriteStream(), width: headerInfo.Width, height: headerInfo.Height);
             terminal.Record(command, _env);
             Console.WriteLine("Record Finished");
