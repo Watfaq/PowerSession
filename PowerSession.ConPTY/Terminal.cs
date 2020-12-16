@@ -14,6 +14,10 @@ namespace PowerSession.Main.ConPTY
     public sealed class Terminal
     {
         private const string CtrlC_Command = "\x3";
+        private char[] UpArrow = new []{(char) 0x1b, (char) 0x5b, 'A'};
+        private char[] DownArrow = new []{(char) 0x1b, (char) 0x5b, 'B'};
+        private char[] RightArrow = new []{(char) 0x1b, (char) 0x5b, 'C'};
+        private char[] LeftArrow = new []{(char) 0x1b, (char) 0x5b, 'D'};
 
         private readonly Stream _inputReader;
         private readonly Stream _outputWriter;
@@ -92,7 +96,24 @@ namespace PowerSession.Main.ConPTY
                 while (!_token.IsCancellationRequested)
                 {
                     var key = Console.ReadKey(true);
-                    _consoleInputWriter.Write(key.KeyChar);
+                    switch (key.Key)
+                    {
+                        case ConsoleKey.UpArrow:
+                            _consoleInputWriter.Write(UpArrow);
+                            break;
+                        case ConsoleKey.DownArrow:
+                            _consoleInputWriter.Write(DownArrow);
+                            break;
+                        case ConsoleKey.RightArrow:
+                            _consoleInputWriter.Write(RightArrow);
+                            break;
+                        case ConsoleKey.LeftArrow:
+                            _consoleInputWriter.Write(LeftArrow);
+                            break;
+                        default:                 
+                            _consoleInputWriter.Write(key.KeyChar);
+                            break;
+                    }
                 }
             }, TaskCreationOptions.LongRunning);
         }
