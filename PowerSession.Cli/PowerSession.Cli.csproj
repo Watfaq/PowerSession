@@ -2,16 +2,16 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
         <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
         <AssemblyName>PowerSession</AssemblyName>
         <PackageId>PowerSession</PackageId>
         <Title>PowerSession</Title>
         <Authors>Yuwei Ba</Authors>
         <IsPackable>true</IsPackable>
-        <PackageVersion>1.2.2</PackageVersion>
-        <AssemblyVersion>1.2.2</AssemblyVersion>
-        <FileVersion>1.2.2</FileVersion>
+        <PackageVersion>1.4.0</PackageVersion>
+        <AssemblyVersion>1.4.0</AssemblyVersion>
+        <FileVersion>1.4.0</FileVersion>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>PowerSession</ToolCommandName>
         <RepositoryUrl>https://github.com/ibigbug/PowerSession</RepositoryUrl>
