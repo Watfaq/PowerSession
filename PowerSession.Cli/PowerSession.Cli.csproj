@@ -9,9 +9,9 @@
         <Title>PowerSession</Title>
         <Authors>Yuwei Ba</Authors>
         <IsPackable>true</IsPackable>
-        <PackageVersion>1.4.0</PackageVersion>
-        <AssemblyVersion>1.4.0</AssemblyVersion>
-        <FileVersion>1.4.0</FileVersion>
+        <PackageVersion>1.4.1</PackageVersion>
+        <AssemblyVersion>1.4.1</AssemblyVersion>
+        <FileVersion>1.4.1</FileVersion>
         <PackAsTool>true</PackAsTool>
         <ToolCommandName>PowerSession</ToolCommandName>
         <RepositoryUrl>https://github.com/ibigbug/PowerSession</RepositoryUrl>
