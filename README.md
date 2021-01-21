@@ -56,6 +56,24 @@ $ PowerSession.Cli.exe auth
 ```PowerShell
 $ PowerSession.Cli.exe upload a.txt
 ```
+
+### Get Help
+
+```PowerShell
+# PowerSession.exe rec -h
+
+rec:
+  Record and save a session
+
+Usage:
+  PowerSession rec [options] <file>
+
+Arguments:
+  <file>    The filename to save the record
+
+Options:
+  -c, --command <command>    The command to record, default to be powershell.exe
+```
     
 ## Checkout A Demo
 
