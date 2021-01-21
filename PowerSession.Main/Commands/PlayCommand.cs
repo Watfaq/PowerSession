@@ -1,4 +1,6 @@
-﻿namespace PowerSession.Commands
+﻿using System.IO;
+
+namespace PowerSession.Commands
 {
     using System;
     using System.Threading;
@@ -23,6 +25,11 @@
 
         public PlayCommand(PlayArgs args) : base(args.EnableAnsiEscape)
         {
+            if (!File.Exists(args.Filename))
+            {
+                Console.Out.WriteLine($"File {args.Filename} not found.");
+                Environment.Exit(1);
+            }
             _session = new RecordSession(args.Filename);
 
             _cancellationTokenSource = new CancellationTokenSource();
