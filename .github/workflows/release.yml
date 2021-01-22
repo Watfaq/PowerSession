@@ -4,10 +4,13 @@ on:
     tags:
     - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
-name: Upload Release Asset
+name: Publish Release Asset
 
 jobs:
-  build:
+  publish:
+    strategy:
+      matrix:
+        runtime: ['win10-x64', 'linux-x64', 'osx-x64']
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
@@ -20,7 +23,8 @@ jobs:
         uses: actions/checkout@v2
       - name: Build project # This would actually build your project, using zip for an example artifact
         run: |
-           dotnet publish PowerSession.Cli -o out -c Release -r win-x64  /p:PublishSingleFile=true /p:TrimUnusedDependencies=true /p:PublishTrimmed=true /p:UseAppHost=true
+           dotnet publish PowerSession.Cli -o bin/${{matrix.runtime}} -c Release -r ${{matrix.runtime}}  /p:PublishSingleFile=true /p:TrimUnusedDependencies=true /p:PublishTrimmed=true /p:UseAppHost=true
+           dotnet pack PowerSession.Cli -c Release -o nuget/${{matrix.runtime}} --runtime ${{matrix.runtime}} 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -38,6 +42,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-          asset_path: ./out/PowerSession.exe
-          asset_name: PowerSession.exe
+          asset_path: ./bin/${{matrix.runtime}}/PowerSession.exe
+          asset_name: PowerSession-${{matrix.runtime}}.exe
           asset_content_type: application/octet-stream
+      - name: Publish Nuget Package
+        run: |
+           dotnet nuget push "nuget/${{ matrix.runtime }}/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
