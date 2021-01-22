@@ -7,7 +7,31 @@ on:
 name: Publish Release Asset
 
 jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Store Release URL
+        run: |
+          echo ${{ steps.create_release.outputs.upload_url }} > result.txt
+      - name: Upload math result for job 1
+        uses: actions/upload-artifact@v2
+        with:
+          name: result.txt
+          path: result.txt
+
   publish:
+    needs: create-release
     strategy:
       matrix:
         runtime: ['win10-x64', 'linux-x64', 'osx-x64']
@@ -24,24 +48,23 @@ jobs:
       - name: Build project # This would actually build your project, using zip for an example artifact
         run: |
            dotnet publish PowerSession.Cli -o bin/${{matrix.runtime}} -c Release -r ${{matrix.runtime}}  /p:PublishSingleFile=true /p:TrimUnusedDependencies=true /p:PublishTrimmed=true /p:UseAppHost=true
-           dotnet pack PowerSession.Cli -c Release -o nuget/${{matrix.runtime}} --runtime ${{matrix.runtime}} 
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+           dotnet pack PowerSession.Cli -c Release -o nuget/${{matrix.runtime}} --runtime ${{matrix.runtime}}
+      - name: Download Release URL
+        uses: actions/download-artifact@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
+          name: result.txt
+      - shell: bash
+        id: download_release_url
+        run: |
+          value=`cat result.txt`
+          echo "::set-output name=upload_url::$value"
       - name: Upload Release Asset
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+          upload_url: ${{ steps.download_release_url.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./bin/${{matrix.runtime}}/PowerSession.exe
           asset_name: PowerSession-${{matrix.runtime}}.exe
           asset_content_type: application/octet-stream
