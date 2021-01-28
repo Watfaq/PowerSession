@@ -60,7 +60,7 @@ $ PowerSession.Cli.exe upload a.txt
 ### Get Help
 
 ```PowerShell
-# PowerSession.exe rec -h
+$ PowerSession.exe rec -h
 
 rec:
   Record and save a session
@@ -83,5 +83,5 @@ Options:
 
 - [x] Implement other necessary features
     - [ ] Other optional parameters
-- [ ] Publish to package installers
+- [x] Publish to package installers
 - [ ] Test Cases
