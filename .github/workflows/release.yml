@@ -34,7 +34,7 @@ jobs:
     needs: create-release
     strategy:
       matrix:
-        runtime: ['win10-x64', 'linux-x64', 'osx-x64']
+        runtime: ['win10-x64']
     name: Upload Release Asset
     runs-on: ubuntu-latest
     steps:
@@ -53,12 +53,13 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: result.txt
-      - shell: bash
+      - name: Get Upload URL
+        shell: bash
         id: download_release_url
         run: |
           value=`cat result.txt`
           echo "::set-output name=upload_url::$value"
-      - name: Upload Release Asset
+      - name: Upload Release Asset Win
         id: upload-release-asset 
         uses: actions/upload-release-asset@v1
         env:
