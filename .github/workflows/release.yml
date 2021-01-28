@@ -71,4 +71,4 @@ jobs:
           asset_content_type: application/octet-stream
       - name: Publish Nuget Package
         run: |
-           dotnet nuget push "nuget/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+           dotnet nuget push "nuget/*.nupkg" --api-key ${{ secrets.NUGET_API_TOKEN }} --source https://api.nuget.org/v3/index.json
