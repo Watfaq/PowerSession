@@ -23,7 +23,7 @@ jobs:
           prerelease: false
       - name: Store Release URL
         run: |
-          echo ${{ steps.create_release.outputs.upload_url }} > result.txt
+          echo '${{ steps.create_release.outputs.upload_url }}' > result.txt
       - name: Upload math result for job 1
         uses: actions/upload-artifact@v2
         with:
@@ -48,7 +48,7 @@ jobs:
       - name: Build project # This would actually build your project, using zip for an example artifact
         run: |
            dotnet publish PowerSession.Cli -o bin/${{matrix.runtime}} -c Release -r ${{matrix.runtime}}  /p:PublishSingleFile=true /p:TrimUnusedDependencies=true /p:PublishTrimmed=true /p:UseAppHost=true
-           dotnet pack PowerSession.Cli -c Release -o nuget/${{matrix.runtime}} --runtime ${{matrix.runtime}}
+           dotnet pack PowerSession.Cli -c Release -o nuget
       - name: Download Release URL
         uses: actions/download-artifact@v2
         with:
@@ -71,4 +71,4 @@ jobs:
           asset_content_type: application/octet-stream
       - name: Publish Nuget Package
         run: |
-           dotnet nuget push "nuget/${{ matrix.runtime }}/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+           dotnet nuget push "nuget/*.nupkg" --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
