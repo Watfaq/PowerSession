@@ -47,7 +47,7 @@
                 if (lineData.Count != 3) throw new InvalidDataException("Invalid record data");
                 var rv = new SessionLine
                 {
-                    Timestamp = (double) lineData[0],
+                    Timestamp = Convert.ToDouble(lineData[0]),
                     Stdout = (string) lineData[1] == "o",
                     Content = (string) lineData[2]
                 };
