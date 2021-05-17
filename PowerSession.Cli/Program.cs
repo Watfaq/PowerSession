@@ -14,10 +14,7 @@
             var record = new Command("rec")
             {
                 new Argument<FileInfo>("file"){Description = "The filename to save the record"},
-                new Option(new []{"--command", "-c"}, "The command to record, default to be powershell.exe")
-                {
-                    Argument = new Argument<string>()
-                }
+                new Option(new []{"--command", "-c"}, "The command to record, default to be powershell.exe", typeof(string))
             };
             record.Description = "Record and save a session";
             record.Handler = CommandHandler.Create((FileInfo file, string command) =>
