@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net5.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
         <AssemblyName>PowerSession</AssemblyName>
         <PackageId>PowerSession</PackageId>
@@ -18,9 +18,9 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21216.1" />
+      <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
     </ItemGroup>
-    
+
     <ItemGroup>
       <ProjectReference Include="..\PowerSession.ConPTY\PowerSession.ConPTY.csproj" />
       <ProjectReference Include="..\PowerSession.Main\PowerSession.Main.csproj" />
