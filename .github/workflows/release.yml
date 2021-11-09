@@ -26,7 +26,7 @@ jobs:
            dotnet publish PowerSession.Cli -o bin/${{matrix.runtime}} -c Release -r ${{matrix.runtime}}  /p:PublishSingleFile=true /p:TrimUnusedDependencies=true /p:PublishTrimmed=true /p:UseAppHost=true
            ls bin/${{matrix.runtime}}
            mv bin/${{matrix.runtime}}/PowerSession.exe bin/${{matrix.runtime}}/PowerSession-${{matrix.runtime}}.exe
-           dotnet publish PowerSession.Cli -o bin/no-self-contained/ -c Release -r ${{matrix.runtime}} -p:PublishSingleFile=true --no-self-contained
+           dotnet publish PowerSession.Cli -o bin/no-self-contained/ -c Release -p:PublishSingleFile=true --no-self-contained
            ls bin/no-self-contained/
            mv bin/no-self-contained/PowerSession.exe bin/no-self-contained/PowerSession-no-self-contained.exe
            dotnet pack PowerSession.Cli -c Release -o nuget
