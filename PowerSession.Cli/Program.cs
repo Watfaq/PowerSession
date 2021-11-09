@@ -27,7 +27,7 @@
 
                 recordCmd.Execute();
             });
-            
+
             var play = new Command("play")
             {
                 new Argument<FileInfo>("file"){Description = "The record session"}
@@ -45,10 +45,10 @@
                 {
                     var authCommand = new AuthCommand();
                     authCommand.Execute();
-                }), 
+                }),
                 Description = "Auth with asciinema.org"
             };
-            
+
             var upload = new Command("upload")
             {
                 new Argument<FileInfo>("file"){Description = "The file to be uploaded"}

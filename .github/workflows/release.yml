@@ -39,10 +39,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v1.7.2
+        uses: actions/setup-dotnet@v1
         with:
-          # SDK version to use. Examples: 2.2.104, 3.1, 3.1.x
-          dotnet-version: 3.1
+          dotnet-version: '6.0.x'
+          include-prerelease: true
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Build project # This would actually build your project, using zip for an example artifact
