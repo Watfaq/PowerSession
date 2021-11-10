@@ -1,29 +1,30 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
-        <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
-        <AssemblyName>PowerSession</AssemblyName>
-        <PackageId>PowerSession</PackageId>
-        <Title>PowerSession</Title>
-        <Authors>Yuwei Ba</Authors>
-        <IsPackable>true</IsPackable>
-        <PackageVersion>1.4.4</PackageVersion>
-        <AssemblyVersion>1.4.4</AssemblyVersion>
-        <FileVersion>1.4.4</FileVersion>
-        <PackAsTool>true</PackAsTool>
-        <ToolCommandName>PowerSession</ToolCommandName>
-        <RepositoryUrl>https://github.com/ibigbug/PowerSession</RepositoryUrl>
-    </PropertyGroup>
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net6.0</TargetFramework>
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <AssemblyName>PowerSession</AssemblyName>
+    <PackageId>PowerSession</PackageId>
+    <Title>PowerSession</Title>
+    <Authors>Yuwei Ba</Authors>
+    <IsPackable>true</IsPackable>
+    <Version>1.4.5</Version>
+    <PackageVersion>1.4.5</PackageVersion>
+    <AssemblyVersion>1.4.5</AssemblyVersion>
+    <FileVersion>1.4.5</FileVersion>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>PowerSession</ToolCommandName>
+    <RepositoryUrl>https://github.com/ibigbug/PowerSession</RepositoryUrl>
+  </PropertyGroup>
 
-    <ItemGroup>
-      <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
-    </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.21308.1" />
+  </ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\PowerSession.ConPTY\PowerSession.ConPTY.csproj" />
-      <ProjectReference Include="..\PowerSession.Main\PowerSession.Main.csproj" />
-    </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PowerSession.ConPTY\PowerSession.ConPTY.csproj" />
+    <ProjectReference Include="..\PowerSession.Main\PowerSession.Main.csproj" />
+  </ItemGroup>
 
 </Project>
