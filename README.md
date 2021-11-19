@@ -6,6 +6,9 @@ PowerShell version of [asciinema](https://github.com/asciinema/asciinema) based 
 
 Basic features record/play/auth/upload are working now.
 
+## Checkout A Demo
+
+[![asciicast](https://asciinema.org/a/272866.svg)](https://asciinema.org/a/272866)
 
 ## Compatibilities
 
@@ -74,10 +77,6 @@ Arguments:
 Options:
   -c, --command <command>    The command to record, default to be powershell.exe
 ```
-    
-## Checkout A Demo
-
-[![asciicast](https://asciinema.org/a/272866.svg)](https://asciinema.org/a/272866)
 
 ## Roadmap
 
@@ -85,3 +84,6 @@ Options:
     - [ ] Other optional parameters
 - [x] Publish to package installers
 - [ ] Test Cases
+
+## Supporters
+- [GitBook](https://www.gitbook.com/) Community License
