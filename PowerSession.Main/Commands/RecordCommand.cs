@@ -64,7 +64,7 @@
             }
         }
 
-        private static string _getTerm()
+        private static string GetTerm()
         {
             return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WT_SESSION")) ? "windows-terminal" :
                 Environment.GetEnvironmentVariable("TERM");
@@ -72,12 +72,15 @@
 
         private void _record(string filename, string command = null)
         {
-            command ??= Environment.GetEnvironmentVariable("SHELL") ?? "powershell.exe";
+            if (string.IsNullOrEmpty(command))
+            {
+                command = Environment.GetEnvironmentVariable("SHELL") ?? "powershell.exe";
+            }
 
             _env ??= new Dictionary<string, string>();
             _env.Add("SHELL", Environment.GetEnvironmentVariable("SHELL") ?? "powershell.exe");
 
-            string term = _getTerm();
+            string term = GetTerm();
             if (!string.IsNullOrWhiteSpace(term))
             {
                 _env.Add("TERM", term);
