@@ -66,7 +66,7 @@
 
         private static string GetTerm()
         {
-            return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WT_SESSION")) ? "windows-terminal" :
+            return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WT_SESSION")) ? "ms-terminal" :
                 Environment.GetEnvironmentVariable("TERM");
         }
 
