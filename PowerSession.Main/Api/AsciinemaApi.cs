@@ -1,12 +1,14 @@
-﻿namespace PowerSession.Main.Api
+﻿
+namespace PowerSession.Main.Api
 {
     using System;
     using System.IO;
     using System.Net.Http;
+    using System.Linq;
     using System.Net.Http.Headers;
-    using System.Runtime.InteropServices;
     using System.Text;
     using PowerSession.Api;
+    using System.Reflection;
 
     public class AsciinemaApi : IApiService
     {
@@ -15,9 +17,11 @@
         private string AuthUrl => $"{ApiHost}/connect/{AppConfig.InstallId}";
         private string UploadUrl => $"{ApiHost}/api/asciicasts";
 
-        private static readonly string RuntimeFramework = $"NetCoreApp/{Environment.Version.Major}.{Environment.Version.Minor}";
-        private static readonly string OperatingSystem = $"Windows {Environment.OSVersion.Version.Major}-{Environment.OSVersion.VersionString}";
-        
+
+        private static readonly OperatingSystem Os = Environment.OSVersion;
+        private static readonly string RuntimeFramework = $"dotnet/{Environment.Version.Major}.{Environment.Version.Minor}.{Environment.Version.Build}";
+        private static readonly string OperatingSystem = $"Windows/{Os.Version.Major}-{Os.Version.Major}.{Os.Version.Minor}.{Os.Version.Build}-SP{Os.ServicePack.Split(' ').Skip(2).FirstOrDefault() ?? "0"}";
+
         public string Upload(string filePath)
         {
             var req = new MultipartFormDataContent();
@@ -40,12 +44,12 @@
             _httpClient = new HttpClient();
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(MediaTypeWithQualityHeaderValue.Parse(System.Net.Mime.MediaTypeNames.Application.Json));
-            
+
             _httpClient.DefaultRequestHeaders.Add("User-Agent",$"asciinema/2.0.0 {RuntimeFramework} {OperatingSystem}");
-            
+
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"user:{AppConfig.InstallId}")));
         }
-        
+
         public void Auth()
         {
             Console.WriteLine("Open the following URL in a web browser to link your" +
