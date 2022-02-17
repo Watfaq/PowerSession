@@ -72,11 +72,10 @@
 
         private void _record(string filename, string command = null)
         {
-            if (string.IsNullOrEmpty(command)) command = "powershell.exe";
+            command ??= Environment.GetEnvironmentVariable("SHELL") ?? "powershell.exe";
 
             _env ??= new Dictionary<string, string>();
-            _env.Add("POWERSESSION_RECORDING", "1");
-            _env.Add("SHELL", "powershell.exe");
+            _env.Add("SHELL", Environment.GetEnvironmentVariable("SHELL") ?? "powershell.exe");
 
             string term = _getTerm();
             if (!string.IsNullOrWhiteSpace(term))

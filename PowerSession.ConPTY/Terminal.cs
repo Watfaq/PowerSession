@@ -52,7 +52,7 @@ namespace PowerSession.Main.ConPTY
 
             _width = width == 0 ? Console.WindowWidth : width;
             _height = height == 0 ? Console.WindowHeight : height;
-            
+
             _tokenSource = new CancellationTokenSource();
             _token = _tokenSource.Token;
         }
@@ -62,7 +62,7 @@ namespace PowerSession.Main.ConPTY
             using var inputPipe = new PseudoConsolePipe();
             using var outputPipe = new PseudoConsolePipe();
             using var pseudoConsole = PseudoConsole.Create(inputPipe.ReadSide, outputPipe.WriteSide, _width, _height);
-            using var process = ProcessFactory.Start(command, PseudoConsole.PseudoConsoleThreadAttribute,
+            using var process = ProcessFactory.Start($"powershell.exe -c {command}", PseudoConsole.PseudoConsoleThreadAttribute,
                 pseudoConsole.Handle);
             _consoleOutStream = new FileStream(outputPipe.ReadSide, FileAccess.Read);
 
@@ -110,7 +110,7 @@ namespace PowerSession.Main.ConPTY
                         case ConsoleKey.LeftArrow:
                             _consoleInputWriter.Write(LeftArrow);
                             break;
-                        default:                 
+                        default:
                             _consoleInputWriter.Write(key.KeyChar);
                             break;
                     }
