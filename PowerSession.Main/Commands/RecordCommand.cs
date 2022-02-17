@@ -1,12 +1,12 @@
 ﻿namespace PowerSession.Main.Commands
 {
+    using ConPTY;
+    using Newtonsoft.Json;
+    using PowerSession.Commands;
     using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
-    using ConPTY;
-    using Newtonsoft.Json;
-    using PowerSession.Commands;
     using Utils;
 
     public struct RecordHeader
@@ -64,14 +64,25 @@
             }
         }
 
+        private static string _getTerm()
+        {
+            return !string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("WT_SESSION")) ? "windows-terminal" :
+                Environment.GetEnvironmentVariable("TERM");
+        }
+
         private void _record(string filename, string command = null)
         {
             if (string.IsNullOrEmpty(command)) command = "powershell.exe";
 
-            if (_env == null) _env = new Dictionary<string, string>();
+            _env ??= new Dictionary<string, string>();
             _env.Add("POWERSESSION_RECORDING", "1");
             _env.Add("SHELL", "powershell.exe");
-            _env.Add("TERM", Environment.GetEnvironmentVariable("TERMINAL_EMULATOR") ?? "NotSure");
+
+            string term = _getTerm();
+            if (!string.IsNullOrWhiteSpace(term))
+            {
+                _env.Add("TERM", term);
+            }
 
             using var writer = new FileWriter(filename);
             var headerInfo = new RecordHeader
