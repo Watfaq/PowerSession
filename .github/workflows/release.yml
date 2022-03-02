@@ -20,7 +20,7 @@ jobs:
           dotnet-version: '6.0.x'
           include-prerelease: true
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build project # This would actually build your project, using zip for an example artifact
         run: |
            dotnet publish PowerSession.Cli -o bin/${{matrix.runtime}} -c Release -r ${{matrix.runtime}}  -p:PublishSingleFile=true --self-contained
