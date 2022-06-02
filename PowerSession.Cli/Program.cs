@@ -1,8 +1,6 @@
 ﻿namespace PowerSession.Cli
 {
-    using System;
     using System.CommandLine;
-    using System.CommandLine.Invocation;
     using System.IO;
     using Commands;
     using Main.Commands;
@@ -11,13 +9,16 @@
     {
         private static void Main(string[] args)
         {
+            var recordArg = new Argument<FileInfo>("file") {Description = "The filename to save the record"};
+            var recordOpt = new Option<string>(new[] {"--command", "-c"}, "The command to record, defaults to $SHELL");
+
             var record = new Command("rec")
             {
-                new Argument<FileInfo>("file"){Description = "The filename to save the record"},
-                new Option(new []{"--command", "-c"}, "The command to record, defaults to $SHELL", typeof(string))
+                recordArg,
+                recordOpt,
             };
             record.Description = "Record and save a session";
-            record.Handler = CommandHandler.Create((FileInfo file, string command) =>
+            record.SetHandler((FileInfo file, string command) =>
             {
                 var recordCmd = new RecordCommand(new RecordArgs
                 {
@@ -26,39 +27,41 @@
                 });
 
                 recordCmd.Execute();
-            });
+            }, recordArg, recordOpt);
 
+            var playArg = new Argument<FileInfo>("file") {Description = "The record session"};
             var play = new Command("play")
             {
-                new Argument<FileInfo>("file"){Description = "The record session"}
+                playArg,
             };
             play.Description = "Play a recorded session";
-            play.Handler = CommandHandler.Create((FileInfo file) =>
+            play.SetHandler((FileInfo file) =>
             {
                 var playCommand = new PlayCommand(new PlayArgs{Filename = file.FullName, EnableAnsiEscape = true});
                 playCommand.Execute();
-            });
+            }, playArg);
 
             var auth = new Command("auth")
             {
-                Handler = CommandHandler.Create(() =>
-                {
-                    var authCommand = new AuthCommand();
-                    authCommand.Execute();
-                }),
                 Description = "Auth with asciinema.org"
             };
+            auth.SetHandler(() =>
+            {
+                var authCommand = new AuthCommand();
+                authCommand.Execute();
+            });
 
+            var uploadArg = new Argument<FileInfo>("file") {Description = "The file to be uploaded"};
             var upload = new Command("upload")
             {
-                new Argument<FileInfo>("file"){Description = "The file to be uploaded"}
+                uploadArg,
             };
             upload.Description = "Upload a session to ascinema.org";
-            upload.Handler = CommandHandler.Create((FileInfo file) =>
+            upload.SetHandler((FileInfo file) =>
             {
                 var uploadCommand = new UploadCommand(file.FullName);
                 uploadCommand.Execute();
-            });
+            }, uploadArg);
 
             var rooCommand = new RootCommand
             {
