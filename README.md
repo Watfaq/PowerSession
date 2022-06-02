@@ -15,7 +15,7 @@ PowerShell version of [asciinema](https://github.com/asciinema/asciinema) based 
 
 ## Checkout A Demo
 
-[![asciicast](https://asciinema.org/a/272866.svg)](https://asciinema.org/a/272866)
+[![asciicast](https://asciinema.org/a/499120.svg)](https://asciinema.org/a/499120)
 
 ## Installation
 
@@ -27,18 +27,20 @@ cargo install PowerSession
 
 ### Get Help
 ```console
-PS D:\projects\PowerSession> PowerSession.exe -h
-PowerSession
+PS D:\projects\PowerSession> PowerSession.exe
+PowerSession 0.1.5
 
 USAGE:
-    PowerSession.exe [SUBCOMMAND]
+    PowerSession.exe [OPTIONS] <SUBCOMMAND>
 
 OPTIONS:
-    -h, --help    Print help information
+    -l, --log-level <log-level>    can be one of [error|warn|info|debug|trace] [default: error]
+    -h, --help                     Print help information
+    -V, --version                  Print version information
 
 SUBCOMMANDS:
     rec       Record and save a session
-    play
+    play      Play a recorded session
     auth      Authentication with asciinema.org
     upload    Upload a session to ascinema.org
     help      Print this message or the help of the given subcommand(s)
