@@ -4,7 +4,7 @@ on:
     tags:
     - 'cs-v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
-name: Publish Release Asset
+name: Publish CSharp Release Asset
 
 jobs:
   publish:
