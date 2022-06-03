@@ -2,9 +2,9 @@
 
 > Record a Session in PowerShell.
 
-PowerShell version of [asciinema](https://github.com/asciinema/asciinema) based on [Windows Pseudo Console(ConPTY)](https://devblogs.microsoft.com/commandline/windows-command-line-introducing-the-windows-pseudo-console-conpty/)
+**‼️  DEPRECATED Checkout the brand new Rust implementation: https://github.com/Watfaq/PowerSession-rs ‼️**
 
-**Checkout the brand new Rust implementation: https://github.com/Watfaq/PowerSession-rs**
+PowerShell version of [asciinema](https://github.com/asciinema/asciinema) based on [Windows Pseudo Console(ConPTY)](https://devblogs.microsoft.com/commandline/windows-command-line-introducing-the-windows-pseudo-console-conpty/)
 
 ## Checkout A Demo
 
