@@ -4,7 +4,7 @@
 
 PowerShell version of [asciinema](https://github.com/asciinema/asciinema) based on [Windows Pseudo Console(ConPTY)](https://devblogs.microsoft.com/commandline/windows-command-line-introducing-the-windows-pseudo-console-conpty/)
 
-Basic features record/play/auth/upload are working now.
+**Checkout the brand new Rust implementation: https://github.com/Watfaq/PowerSession-rs**
 
 ## Checkout A Demo
 
@@ -77,13 +77,6 @@ Arguments:
 Options:
   -c, --command <command>    The command to record, default to be powershell.exe
 ```
-
-## Roadmap
-
-- [x] Implement other necessary features
-    - [ ] Other optional parameters
-- [x] Publish to package installers
-- [ ] Test Cases
 
 ## Supporters
 - [GitBook](https://www.gitbook.com/) Community License
